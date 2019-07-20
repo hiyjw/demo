@@ -1,0 +1,99 @@
+{extend name="layout/common" /}
+
+{block name="main"}
+
+
+<style>
+    tr td{
+         text-overflow:ellipsis;
+    }
+</style>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    <a href="/admin/news/create" style="margin-right:100px" class="layui-btn layui-btn-sm">发表新闻</a>
+                </div>
+                <div class="layui-card-body">
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="150">
+                                <col width="150">
+                                    <col width="200">
+                                        <col>
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>
+                                    标题
+                                </th>
+                                <th>
+                                    摘要
+                                </th>
+                                <th>
+                                    状态
+                                </th>
+                                <th>
+                                    内容
+                                </th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="data" id="vo"}
+                            <tr>
+                                <td>
+                                    {$vo.title}
+                                </td>
+                                <td>
+                                    {$vo.abstract}
+                                </td>
+                                <td>
+                                    {if condition="$vo.status eq '1'"}
+                                    发布
+                                    {else /}
+                                    未发布
+                                    {/if}
+                                </td>
+                                <td>
+                                    {$vo.content}
+                                </td>
+                                <td>
+                                    <a  href="{:url('/admin/news/edit')}?id={$vo.id}" class="layui-btn"><i class="layui-icon"></i></a>
+                                    <button class="layui-btn layui-btn-danger" onclick="doDel({$vo.id})"><i class="layui-icon"></i></button>
+                                </td>
+                            </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/admins/js/jquery.min.js"></script>
+<script>
+    function doDel(id){
+        $.get("{:url('admin/news/delete')}",{id:id},function($data){
+            if($data == true){
+                alert('删除成功');
+                location.reload([bForceGet]);
+            }else{
+                alert('删除失败');
+
+            }
+        });
+    }
+
+    /*function edit(id){
+        $.get("{:url('/admin/news/edit')}",{id:id},function($data){
+            console.log($data);
+        });
+    }*/
+
+</script>
+{/block}
